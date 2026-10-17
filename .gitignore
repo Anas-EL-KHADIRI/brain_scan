@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Données volumineuses (conserver les fichiers .gitkeep)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Modèles volumineux
+models/*.h5
+models/*.keras
+!models/.gitkeep
+
+# Rapports et logs
+reports/figures/*
+!reports/figures/.gitkeep
+
+# IDE et OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+breif.md
+CONCEPTS.md
+TODO.md
