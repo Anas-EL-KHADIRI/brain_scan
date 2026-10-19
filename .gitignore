@@ -9,9 +9,6 @@ venv/
 .venv/
 ENV/
 
-# Jupyter Notebooks
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
 
 # Données volumineuses (conserver les fichiers .gitkeep)
 data/raw/*
@@ -20,9 +17,6 @@ data/processed/*
 !data/processed/.gitkeep
 
 
-# Rapports et logs
-reports/figures/*
-!reports/figures/.gitkeep
 
 # Trained machine learning models
 models/*.h5
