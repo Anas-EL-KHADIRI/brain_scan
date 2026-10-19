@@ -7,7 +7,6 @@ from src.config import CLASS_NAMES, REPORTS_DIR
 
 
 def plot_class_distribution(y, save_path=None):
-    # Bar plot of dataset class distribution (Notebook Cell 8)
     unique_classes, class_counts = np.unique(y, return_counts=True)
 
     plt.figure(figsize=(8, 5))
@@ -24,7 +23,6 @@ def plot_class_distribution(y, save_path=None):
 
 
 def show_sample_images(X, y, class_names=CLASS_NAMES, save_path=None):
-    # Grid of sample images per class (Notebook Cell 11)
     plt.figure(figsize=(12, 6))
     for idx, class_name in enumerate(class_names):
         class_idx = np.where(y == class_name)[0][0]
@@ -42,7 +40,6 @@ def show_sample_images(X, y, class_names=CLASS_NAMES, save_path=None):
 
 
 def plot_confusion_matrix(y_true, y_pred, class_names=CLASS_NAMES, save_path=None):
-    # Confusion matrix display (Notebook Cell 21)
     cm = confusion_matrix(
         y_true, y_pred,
         labels=np.arange(len(class_names))
@@ -67,7 +64,6 @@ def plot_confusion_matrix(y_true, y_pred, class_names=CLASS_NAMES, save_path=Non
 
 
 def plot_predictions(X_test, y_true, y_pred, class_names=CLASS_NAMES, indices=None, title="Predictions", save_path=None):
-    # Plot prediction samples with True vs Predicted labels (Notebook Cell 22)
     if indices is None:
         indices = np.arange(min(8, len(X_test)))
 
@@ -92,10 +88,8 @@ def plot_predictions(X_test, y_true, y_pred, class_names=CLASS_NAMES, indices=No
 
 
 def plot_learning_curves(history, save_path=None):
-    # Plot training and validation loss and accuracy curves (Notebook Cell 18)
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
-    # Loss
     ax1.plot(history.history.get("loss", []), label="Train Loss", color="royalblue")
     if "val_loss" in history.history:
         ax1.plot(history.history["val_loss"], label="Val Loss", color="darkorange")
@@ -105,7 +99,6 @@ def plot_learning_curves(history, save_path=None):
     ax1.legend()
     ax1.grid(True, linestyle="--", alpha=0.5)
 
-    # Accuracy
     ax2.plot(history.history.get("accuracy", []), label="Train Accuracy", color="royalblue")
     if "val_accuracy" in history.history:
         ax2.plot(history.history["val_accuracy"], label="Val Accuracy", color="darkorange")
@@ -120,3 +113,21 @@ def plot_learning_curves(history, save_path=None):
         Path(save_path).parent.mkdir(parents=True, exist_ok=True)
         plt.savefig(save_path)
     plt.show()
+
+
+if __name__ == "__main__":
+    from src.data_loader import load_raw_data
+
+    print("1. Loading raw data for visualization...")
+    X, y, class_names = load_raw_data()
+
+    dist_path = REPORTS_DIR / "class_distribution.png"
+    sample_path = REPORTS_DIR / "sample_images.png"
+
+    print(f"2. Saving class distribution -> {dist_path}")
+    plot_class_distribution(y, save_path=dist_path)
+
+    print(f"3. Saving sample images -> {sample_path}")
+    show_sample_images(X, y, class_names=class_names, save_path=sample_path)
+
+    print("Visualizations saved successfully in reports/figures/")

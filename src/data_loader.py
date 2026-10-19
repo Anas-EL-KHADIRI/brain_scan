@@ -17,7 +17,6 @@ from src.config import (
 
 
 def get_class_names(data_dir=DATA_DIR):
-    # Detect class names dynamically from folder names (Notebook Cell 3)
     return sorted([
         folder.name
         for folder in Path(data_dir).iterdir()
@@ -26,7 +25,6 @@ def get_class_names(data_dir=DATA_DIR):
 
 
 def load_raw_data(data_dir=DATA_DIR, img_size=IMG_SIZE, valid_ext=VALID_EXT):
-    # Load, validate extensions, resize, and convert images and labels to NumPy (Notebook Cell 5 & 6)
     data_dir = Path(data_dir)
     class_names = get_class_names(data_dir)
     X = []
@@ -71,13 +69,10 @@ def load_raw_data(data_dir=DATA_DIR, img_size=IMG_SIZE, valid_ext=VALID_EXT):
 
 
 def preprocess_and_split(X, labels, class_names=None, random_state=RANDOM_STATE):
-    # Normalize pixels, encode labels, and perform stratified 70/10/20 split (Notebook Cells 9, 12, 14)
-    # Pixel normalization [0, 1] (Notebook Cell 9)
     X = X.astype(np.float32) / 255.0
     print("Minimum pixel value:", X.min())
     print("Maximum pixel value:", X.max())
 
-    # Label encoding (0, 1, 2, 3) (Notebook Cell 12)
     label_encoder = LabelEncoder()
     y_integers = label_encoder.fit_transform(labels)
 
@@ -89,17 +84,14 @@ def preprocess_and_split(X, labels, class_names=None, random_state=RANDOM_STATE)
 
     num_classes = len(class_mapping)
 
-    # 80% Train+Validation, 20% Test (Notebook Cell 14)
     X_train_val, X_test, y_train_val_idx, y_test_idx = train_test_split(
         X, y_integers, test_size=0.20, random_state=random_state, stratify=y_integers, shuffle=True
     )
 
-    # Train (70% total) and Validation (10% total) (Notebook Cell 14)
     X_train, X_val, y_train_idx, y_val_idx = train_test_split(
         X_train_val, y_train_val_idx, test_size=0.125, random_state=random_state, stratify=y_train_val_idx, shuffle=True
     )
 
-    # Convert to One-Hot
     y_train = to_categorical(y_train_idx, num_classes=num_classes)
     y_val = to_categorical(y_val_idx, num_classes=num_classes)
     y_test = to_categorical(y_test_idx, num_classes=num_classes)

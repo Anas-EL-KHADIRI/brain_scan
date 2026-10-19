@@ -19,15 +19,14 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 
-# Modèles volumineux
-models/*.h5
-models/*.keras
-!models/.gitkeep
 
 # Rapports et logs
 reports/figures/*
 !reports/figures/.gitkeep
 
+# Trained machine learning models
+models/*.h5
+models/*.keras
 # IDE et OS
 .vscode/
 .idea/
@@ -36,3 +35,4 @@ Thumbs.db
 breif.md
 CONCEPTS.md
 TODO.md
+EXAM_STUDY_GUIDE.md

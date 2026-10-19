@@ -6,7 +6,6 @@ from src.visualization import plot_learning_curves
 
 
 def train_pipeline(epochs=EPOCHS, batch_size=BATCH_SIZE, learning_rate=LEARNING_RATE, model_path=MODEL_PATH):
-    # Execute complete training pipeline with callbacks and timing (Notebook Cells 17 & 18)
     print("1. Loading raw dataset...")
     X, y, class_names = load_raw_data()
 
@@ -36,7 +35,6 @@ def train_pipeline(epochs=EPOCHS, batch_size=BATCH_SIZE, learning_rate=LEARNING_
     seconds_total = time.time() - start_time
     print("Training time:", int(seconds_total // 60), "min", int(seconds_total % 60), "sec")
 
-    # Plot and save learning curves
     learning_curves_path = REPORTS_DIR / "learning_curves.png"
     plot_learning_curves(history, save_path=learning_curves_path)
     print(f"Saved learning curves to: {learning_curves_path}")

@@ -5,7 +5,6 @@ import numpy as np
 from PIL import Image
 import streamlit as st
 
-# Add project root to path
 BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
@@ -15,15 +14,12 @@ from src.predict import predict_image
 st.title("🧠 Brain Tumor Classification")
 st.write("Upload a brain MRI scan to predict the tumor type.")
 
-# Upload image
 uploaded_file = st.file_uploader("Choose an MRI image...", type=["jpg", "jpeg", "png", "bmp"])
 
 if uploaded_file is not None:
-    # Display uploaded image
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded MRI Scan", width=300)
 
-    # Predict
     with st.spinner("Classifying..."):
         img_array = np.array(image.convert("RGB"))
         result = predict_image(img_array)
@@ -32,7 +28,6 @@ if uploaded_file is not None:
         confidence = result["confidence"]
         probabilities = result["probabilities"]
 
-        # Display results
         if predicted_class == "notumor":
             st.success(f"**Result: No Tumor Detected ({confidence}%)**")
         else:

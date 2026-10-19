@@ -7,13 +7,11 @@ import tensorflow as tf
 
 from src.config import CLASS_LABELS_PATH, IMG_SIZE, MODEL_PATH
 
-# Cache the loaded model and labels to avoid reloading on each call in apps/APIs
 _CACHED_MODEL = None
 _CACHED_LABELS = None
 
 
 def load_inference_artifacts(model_path=MODEL_PATH, class_labels_path=CLASS_LABELS_PATH):
-    # Load and cache the trained Keras model and JSON label mapping
     global _CACHED_MODEL, _CACHED_LABELS
 
     if _CACHED_LABELS is None:
@@ -27,7 +25,6 @@ def load_inference_artifacts(model_path=MODEL_PATH, class_labels_path=CLASS_LABE
 
 
 def preprocess_single_image(image_input, img_size=IMG_SIZE):
-    # Preprocess single image identically to training (Notebook Cells 5 & 9)
     if isinstance(image_input, (str, Path)):
         image = cv2.imread(str(image_input))
         if image is None:
@@ -35,34 +32,26 @@ def preprocess_single_image(image_input, img_size=IMG_SIZE):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     elif isinstance(image_input, np.ndarray):
         image = image_input.copy()
-        if len(image.shape) == 2:  # Grayscale
+        if len(image.shape) == 2:
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-        elif image.shape[2] == 4:  # RGBA
+        elif image.shape[2] == 4:
             image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
     else:
         raise TypeError("image_input must be a file path (str/Path) or a numpy ndarray")
 
-    # Resize to (224, 224)
     image_resized = cv2.resize(image, img_size)
-
-    # Normalize pixels [0, 1]
     image_normalized = image_resized.astype(np.float32) / 255.0
-
-    # Expand batch dimension: (1, 224, 224, 3)
     image_batch = np.expand_dims(image_normalized, axis=0)
     return image_batch, image
 
 
 def predict_image(image_input, model_path=MODEL_PATH, class_labels_path=CLASS_LABELS_PATH):
-    # Predict tumor class and confidence score for a single MRI scan
     model, class_labels = load_inference_artifacts(model_path, class_labels_path)
     image_batch, raw_image = preprocess_single_image(image_input)
 
-    # Predict
     probabilities_raw = model.predict(image_batch, verbose=0)[0]
     predicted_idx = int(np.argmax(probabilities_raw))
 
-    # Format output
     probabilities = {
         class_labels[str(i)]: float(prob)
         for i, prob in enumerate(probabilities_raw)

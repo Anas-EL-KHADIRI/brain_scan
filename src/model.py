@@ -7,25 +7,21 @@ from src.config import LEARNING_RATE, MODEL_PATH
 
 
 def build_cnn_model(input_shape=(224, 224, 3), num_classes=4):
-    # CNN Architecture definition (Notebook Cell 15)
     model = models.Sequential([
         layers.Input(shape=input_shape),
-        # Block 1
+
         layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
         layers.Dropout(0.25),
 
-        # Block 2
         layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
         layers.Dropout(0.25),
 
-        # Block 3
         layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
         layers.Dropout(0.25),
 
-        # Classification Head
         layers.Flatten(),
         layers.Dense(128, activation='relu'),
         layers.Dropout(0.50),
@@ -35,7 +31,6 @@ def build_cnn_model(input_shape=(224, 224, 3), num_classes=4):
 
 
 def compile_model(model, learning_rate=LEARNING_RATE):
-    # Compile the model with Adam and categorical_crossentropy (Notebook Cell 17)
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
         loss='categorical_crossentropy',
@@ -45,7 +40,6 @@ def compile_model(model, learning_rate=LEARNING_RATE):
 
 
 def get_callbacks(model_path=MODEL_PATH):
-    # Configure production callbacks (Notebook Cell 17)
     os.makedirs(model_path.parent, exist_ok=True)
     callbacks = [
         ModelCheckpoint(
