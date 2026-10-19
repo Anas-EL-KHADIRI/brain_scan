@@ -127,6 +127,3 @@ streamlit run app/app.py
 
 ---
 
-## 📋 Feuille de Route & Progression
-
-Consultez le fichier [`TODO.md`](file:///c:/Users/anas/Desktop/youcode/briefs/brain_scan/TODO.md) pour suivre l'avancement pas-à-pas des différentes phases du projet.
